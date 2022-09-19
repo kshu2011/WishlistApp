@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
@@ -24,6 +25,14 @@ class MainActivity : AppCompatActivity() {
         val itemRecyclerView = findViewById<RecyclerView>(R.id.recyclerView)
         itemRecyclerView.adapter = adapter
         itemRecyclerView.layoutManager = LinearLayoutManager(this)
+
+        //from youtube trying to setup onclick listener
+        adapter.setOnItemClickListener(object : ItemAdapter.onItemClickListener{
+            override fun onItemClick(position: Int) {
+                Toast.makeText(getApplicationContext(), position.toString(), Toast.LENGTH_SHORT).show();
+            }
+
+        })
 
 
         //get the reference to the add button

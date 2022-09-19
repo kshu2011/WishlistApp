@@ -8,7 +8,19 @@ import androidx.recyclerview.widget.RecyclerView
 
 class ItemAdapter(private val items: MutableList<Item>) : RecyclerView.Adapter<ItemAdapter.ViewHolder>(){
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    //youtube video trying to figure out how to make it so can 'click' on
+    // a recyclerview - https://www.youtube.com/watch?v=dB9JOsVx-yY
+    private lateinit var mListener: onItemClickListener
+
+    interface onItemClickListener {
+        fun onItemClick(position: Int)
+    }
+
+    fun setOnItemClickListener(listener: onItemClickListener) {
+        mListener = listener
+    }
+
+    class ViewHolder(itemView: View, listener: onItemClickListener) : RecyclerView.ViewHolder(itemView) {
         val itemNameTextView: TextView
         val itemPriceTextView: TextView
         val itemDescriptionTextView: TextView
@@ -17,6 +29,10 @@ class ItemAdapter(private val items: MutableList<Item>) : RecyclerView.Adapter<I
             itemNameTextView = itemView.findViewById(R.id.itemNameDisplay)
             itemPriceTextView = itemView.findViewById(R.id.itemPriceDisplay)
             itemDescriptionTextView = itemView.findViewById(R.id.itemDescriptionDisplay)
+
+            itemView.setOnClickListener {
+                listener.onItemClick(adapterPosition)
+            }
         }
     }
 
@@ -27,7 +43,7 @@ class ItemAdapter(private val items: MutableList<Item>) : RecyclerView.Adapter<I
         // Inflate the custom layout
         val contactView = inflater.inflate(R.layout.item_view, parent, false)
         // Return a new holder instance
-        return ViewHolder(contactView)
+        return ViewHolder(contactView, mListener)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
